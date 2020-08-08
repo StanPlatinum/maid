@@ -2,7 +2,10 @@
 #include <linux/kernel.h>
 #include <linux/init.h>
 
-#include <asm/siginfo.h>    //siginfo
+#include <asm/siginfo.h> //siginfo
+#include <linux/signal.h>
+#include <linux/sched/signal.h>
+
 #include <linux/rcupdate.h> //rcu_read_lock
 #include <linux/sched.h>    //find_task_by_pid_type
 #include <linux/debugfs.h>
@@ -11,7 +14,11 @@
 #define SIG_TEST 44 // we choose 44 as our signal number (real-time signals are in the range of 33 to 64)
 
 struct dentry *file;
+
 //EXPORT_SYMBOL_GPL(find_task_by_vpid);
+//static int send_sig_info(int sig, struct siginfo *info, struct task_struct *p);
+
+//EXPORT_SYMBOL_GPL(do_send_sig_info);
 
 static ssize_t write_pid(struct file *file, const char __user *buf,
                          size_t count, loff_t *ppos)
@@ -55,6 +62,9 @@ static ssize_t write_pid(struct file *file, const char __user *buf,
     }
     rcu_read_unlock();
     ret = send_sig_info(SIG_TEST, &info, t); //send the signal
+
+    //ret = do_send_sig_info(SIG_TEST, &info, t, PIDTYPE_PID); //send the signal
+
     //Weijie: must send a kernel sig
     if (ret < 0)
     {

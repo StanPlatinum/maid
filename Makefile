@@ -1,6 +1,7 @@
 LIBS += -lpthread -lrt
 
-all: test userspace test_app
+#all: test userspace test_app
+all: test
 
 test: 
 	gcc test.c -o test
