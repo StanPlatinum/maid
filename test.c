@@ -24,6 +24,8 @@ int main ( int argc, char **argv )
     /* kernel needs to know our pid to be able to send us a signal ->
       * we use debugfs for this -> do not forget to mount the debugfs!
       */
+
+    
     configfd = open("/sys/kernel/debug/signalconfpid", O_WRONLY);
     if(configfd < 0) {
         perror("open");
@@ -34,6 +36,7 @@ int main ( int argc, char **argv )
         perror("fwrite"); 
         return -1;
     }
+    
  
     return 0;
 }
